@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>할 일</title>
+    <link rel="stylesheet" href="globals.css">
+    <script src="todo-db.js" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <main class="container">
+      <header class="heading">
+        <h1>할 일</h1>
+        <span id="remaining" class="count">0개 남음</span>
+      </header>
+
+      <form id="add-form" class="add-form">
+        <label for="new-task" class="sr-only">새 할 일</label>
+        <input id="new-task" name="task" type="text" placeholder="할 일을 입력하세요" maxlength="200" autocomplete="off" required>
+        <button type="submit" class="primary">추가</button>
+      </form>
+
+      <section aria-label="할 일 목록" class="list-section">
+        <div class="filters" role="group" aria-label="목록 필터">
+          <button type="button" data-filter="all" aria-pressed="true">전체 <span id="total-count">0</span></button>
+          <button type="button" data-filter="active" aria-pressed="false">미완료</button>
+          <button type="button" data-filter="completed" aria-pressed="false">완료</button>
+        </div>
+        <ul id="task-list" class="task-list"></ul>
+        <p id="empty-message" class="empty-message">아직 할 일이 없어요.<br>위에서 첫 할 일을 추가해 보세요.</p>
+      </section>
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+      <button id="retry" type="button" class="secondary" hidden>다시 불러오기</button>
+    </main>
+  </body>
+</html>
