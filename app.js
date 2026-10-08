@@ -1,7 +1,6 @@
-(() => {
+﻿(() => {
   'use strict';
 
-  const storageKey = 'simple-todo.tasks.v1';
   const addForm = document.querySelector('#add-form');
   const newTask = document.querySelector('#new-task');
   const list = document.querySelector('#task-list');
@@ -49,29 +48,6 @@
     setBusy(true);
     status.textContent = '할 일을 불러오는 중이에요…';
     try {
-      let saved = [];
-      try {
-        const parsed = JSON.parse(localStorage.getItem(storageKey) || '[]');
-        const seen = new Set();
-        if (Array.isArray(parsed)) saved = parsed.filter(task => {
-          if (!task || typeof task.id !== 'string' || seen.has(task.id) ||
-              typeof task.text !== 'string' || !task.text.trim() ||
-              task.text.length > 200 || typeof task.completed !== 'boolean') return false;
-          seen.add(task.id);
-          return true;
-        });
-      } catch (error) { console.error('기존 목록 읽기 실패', error); }
-      if (saved.length) {
-        const rows = saved.map(task => ({
-          id: /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(task.id)
-            ? task.id : crypto.randomUUID(),
-          text: task.text.trim(), completed: task.completed
-        }));
-        // Persist IDs first, so retries cannot duplicate imported tasks.
-        localStorage.setItem(storageKey, JSON.stringify(rows));
-        await window.todoDB.import(rows);
-        localStorage.removeItem(storageKey);
-      }
       tasks = await window.todoDB.list();
       ready = true;
       render();
@@ -223,3 +199,4 @@
   retry.addEventListener('click', initialize);
   void initialize();
 })();
+
