@@ -1,10 +1,15 @@
-﻿(() => {
+(() => {
   'use strict';
-  const url = 'http://localhost:5000/todos';
+  // Render에 배포한 백엔드 주소로 바꿔주세요. (끝에 / 없이)
+  const DEPLOYED_API = 'https://todo-backend-XXXX.onrender.com';
+
+  const isLocal = ['localhost', '127.0.0.1'].includes(location.hostname) || location.protocol === 'file:';
+  const url = `${isLocal ? 'http://localhost:5000' : DEPLOYED_API}/todos`;
 
   async function request(path = '', options = {}) {
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 15000);
+    // Render 무료 서버는 잠들었다 깨어날 때 최대 1분 가까이 걸릴 수 있습니다.
+    const timeout = setTimeout(() => controller.abort(), 60000);
     try {
       const response = await fetch(`${url}${path}`, {
         ...options,
